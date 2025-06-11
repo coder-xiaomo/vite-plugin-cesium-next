@@ -1,3 +1,15 @@
+# ⚡ vite-plugin-cesium-next
+
+> 本仓库 fork 自 [nshen/vite-plugin-cesium](https://github.com/nshen/vite-plugin-cesium)
+
+本仓库在原仓库代码基础上，主要针对性修复/优化了以下问题
+- 相对路径问题：本仓库已支持在 vite.config.ts 中配置以下类型的 base: `./`, `/`, `/foo/bar`, `(不设置)` (新创建的项目 base 默认为 `./`，而原仓库针对 `./` 没有做很好的处理)
+- 资源请求路径：当 base 形如 `/foo/bar` 时，cesium 静态文件由 `/cesium...` 改为请求 `/foo/bar/cesium...`
+鉴于原仓库作者可能不再维护此项目(详见：[issue](https://github.com/nshen/vite-plugin-cesium/issues/62#issuecomment-2957419669))，故 fork 本仓库 ([coder-xiaomo/vite-plugin-cesium-next](https://github.com/coder-xiaomo/vite-plugin-cesium-next)) 继续维护，欢迎提交 Issue / Pr ！
+---
+
+以下是原仓库 README
+
 # ⚡ vite-plugin-cesium
 
 [![npm](https://img.shields.io/npm/v/vite-plugin-cesium.svg)](https://www.npmjs.com/package/vite-plugin-cesium)

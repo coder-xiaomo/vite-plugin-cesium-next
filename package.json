@@ -1,6 +1,6 @@
 {
-  "name": "vite-plugin-cesium",
-  "version": "1.2.23",
+  "name": "vite-plugin-cesium-next",
+  "version": "2.0.0",
   "description": "Cesium library plugin for Vite",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -25,14 +25,17 @@
     "vite-plugin",
     "cesium"
   ],
-  "author": "nshen <nshen121@gmail.com>",
+  "author": "coderxiaomo <codingzhang@126.com>",
+  "contributors": [
+    "nshen <nshen121@gmail.com>"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nshen/vite-plugin-cesium"
+    "url": "git+https://github.com/coder-xiaomo/vite-plugin-cesium-next"
   },
   "bugs": {
-    "url": "https://github.com/nshen/vite-plugin-cesium/issues"
+    "url": "https://github.com/coder-xiaomo/vite-plugin-cesium-next/issues"
   },
   "dependencies": {
     "fs-extra": "^9.1.0",

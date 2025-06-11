@@ -43,7 +43,7 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
   }
 
   return {
-    name: 'vite-plugin-cesium',
+    name: 'vite-plugin-cesium-next',
 
     config(c, { command }) {
       // 项目中 vite.config.ts 配置的 base 路径
