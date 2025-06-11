@@ -6,6 +6,34 @@
 - 相对路径问题：本仓库已支持在 vite.config.ts 中配置以下类型的 base: `./`, `/`, `/foo/bar`, `(不设置)` (新创建的项目 base 默认为 `./`，而原仓库针对 `./` 没有做很好的处理)
 - 资源请求路径：当 base 形如 `/foo/bar` 时，cesium 静态文件由 `/cesium...` 改为请求 `/foo/bar/cesium...`
 鉴于原仓库作者可能不再维护此项目(详见：[issue](https://github.com/nshen/vite-plugin-cesium/issues/62#issuecomment-2957419669))，故 fork 本仓库 ([coder-xiaomo/vite-plugin-cesium-next](https://github.com/coder-xiaomo/vite-plugin-cesium-next)) 继续维护，欢迎提交 Issue / Pr ！
+
+## Install
+
+```bash
+npm i cesium vite-plugin-cesium-text vite -D
+# yarn add cesium vite-plugin-cesium-text vite -D
+```
+
+## Usage
+
+add this plugin to `vite.config.js`
+
+```js
+import { defineConfig } from 'vite';
+import cesium from 'vite-plugin-cesium-next'; // 👈 添加这一行
+
+export default defineConfig({
+  plugins: [
+    // ...
+    cesium(), // 👈 添加这一行
+
+    // 或者如果你需要自定义配置，可以这样写 👇
+    // cesium({ /* 这里可以添加配置 */ }),
+  ]
+});
+```
+
+
 ---
 
 以下是原仓库 README
