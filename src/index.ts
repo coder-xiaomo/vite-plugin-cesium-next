@@ -67,7 +67,7 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
       if (!globalVars.isBuild) {
         // -----------dev-----------
         userConfig.define = {
-          CESIUM_BASE_URL: JSON.stringify(CESIUM_BASE_URL)
+          CESIUM_BASE_URL: JSON.stringify(globalVars.cesiumRelativeUrl)
         };
       } else {
         // -----------build------------
@@ -78,7 +78,7 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
             chunkSizeWarningLimit: 5000,
             rollupOptions: {
               output: {
-                intro: `window.CESIUM_BASE_URL = ${JSON.stringify(CESIUM_BASE_URL)};`
+                intro: `window.CESIUM_BASE_URL = ${JSON.stringify(globalVars.cesiumRelativeUrl)};`
               }
             }
           };
@@ -97,7 +97,7 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
 
     configureServer({ middlewares }) {
       const cesiumPath = path.join(cesiumBuildRootPath, devMinifyCesium ? 'Cesium' : 'CesiumUnminified');
-      middlewares.use(path.posix.join('/', CESIUM_BASE_URL), serveStatic(cesiumPath, {
+      middlewares.use(path.posix.join('/', globalVars.cesiumRelativeUrl), serveStatic(cesiumPath, {
         setHeaders: (res, path, stat) => {
           res.setHeader('Access-Control-Allow-Origin', '*')
         }
