@@ -10,8 +10,9 @@
 ## Install
 
 ```bash
-npm i cesium vite-plugin-cesium-text vite -D
-# yarn add cesium vite-plugin-cesium-text vite -D
+# 记得安装 cesium 依赖哦
+npm i vite-plugin-cesium-next -D
+# yarn add vite-plugin-cesium-text -D
 ```
 
 ## Usage
