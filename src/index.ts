@@ -13,6 +13,7 @@ interface VitePluginCesiumOptions {
   cesiumBuildRootPath?: string;
   cesiumBuildPath?: string;
   cesiumBaseUrl?: string;
+  viteBase?: string;
 }
 
 export default function vitePluginCesium(options: VitePluginCesiumOptions = {}): Plugin {
@@ -21,32 +22,49 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
     devMinifyCesium = false,
     cesiumBuildRootPath = 'node_modules/cesium/Build',
     cesiumBuildPath = 'node_modules/cesium/Build/Cesium/',
-    cesiumBaseUrl = 'cesium/'
+    cesiumBaseUrl = 'cesium/',
+    viteBase = undefined,
   } = options;
 
-  let CESIUM_BASE_URL = cesiumBaseUrl;
-  if (!CESIUM_BASE_URL.endsWith('/')) {
-    CESIUM_BASE_URL += '/';
+  const CESIUM_BASE_URL = cesiumBaseUrl.endsWith('/')
+    ? cesiumBaseUrl
+    : (cesiumBaseUrl + '/');
+
+  const globalVars: {
+    outDir: string,
+    base: string,
+    isBuild: boolean,
+    cesiumRelativeUrl: string,
+  } = {
+    outDir: 'dist',
+    base: '/',
+    isBuild: false,
+    cesiumRelativeUrl: '',
   }
-  let outDir = 'dist';
-  let base: string = '/';
-  let isBuild: boolean = false;
 
   return {
     name: 'vite-plugin-cesium',
 
     config(c, { command }) {
-      isBuild = command === 'build';
-      if (c.base !== undefined) {
-        base = c.base;
-        if (base === '') base = './';
+      // 项目中 vite.config.ts 配置的 base 路径
+      if (viteBase) {
+        globalVars.base = viteBase;
+      } else if (c.base) {
+        globalVars.base = c.base;
+      } else {
+        globalVars.base = '/';
       }
+      // 是否是打包命令
+      globalVars.isBuild = command === 'build';
+      // 输出路径
       if (c.build?.outDir) {
-        outDir = c.build.outDir;
+        globalVars.outDir = c.build.outDir;
       }
-      CESIUM_BASE_URL = path.posix.join(base, CESIUM_BASE_URL);
+      // 项目浏览器中运行时，Cesium 资源的相对路径
+      globalVars.cesiumRelativeUrl = path.posix.join(globalVars.base, CESIUM_BASE_URL);
+
       const userConfig: UserConfig = {};
-      if (!isBuild) {
+      if (!globalVars.isBuild) {
         // -----------dev-----------
         userConfig.define = {
           CESIUM_BASE_URL: JSON.stringify(CESIUM_BASE_URL)
@@ -87,14 +105,14 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
     },
 
     async closeBundle() {
-      if (isBuild) {
+      if (globalVars.isBuild) {
         try {
-          await fs.copy(path.join(cesiumBuildPath, 'Assets'), path.join(outDir, CESIUM_BASE_URL, 'Assets'));
-          await fs.copy(path.join(cesiumBuildPath, 'ThirdParty'), path.join(outDir, CESIUM_BASE_URL, 'ThirdParty'));
-          await fs.copy(path.join(cesiumBuildPath, 'Workers'), path.join(outDir, CESIUM_BASE_URL, 'Workers'));
-          await fs.copy(path.join(cesiumBuildPath, 'Widgets'), path.join(outDir, CESIUM_BASE_URL, 'Widgets'));
+          await fs.copy(path.join(cesiumBuildPath, 'Assets'), path.join(globalVars.outDir, CESIUM_BASE_URL, 'Assets'));
+          await fs.copy(path.join(cesiumBuildPath, 'ThirdParty'), path.join(globalVars.outDir, CESIUM_BASE_URL, 'ThirdParty'));
+          await fs.copy(path.join(cesiumBuildPath, 'Workers'), path.join(globalVars.outDir, CESIUM_BASE_URL, 'Workers'));
+          await fs.copy(path.join(cesiumBuildPath, 'Widgets'), path.join(globalVars.outDir, CESIUM_BASE_URL, 'Widgets'));
           if (!rebuildCesium) {
-            await fs.copy(path.join(cesiumBuildPath, 'Cesium.js'), path.join(outDir, CESIUM_BASE_URL, 'Cesium.js'));
+            await fs.copy(path.join(cesiumBuildPath, 'Cesium.js'), path.join(globalVars.outDir, CESIUM_BASE_URL, 'Cesium.js'));
           }
         } catch (err) {
           console.error('copy failed', err);
@@ -108,15 +126,15 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
           tag: 'link',
           attrs: {
             rel: 'stylesheet',
-            href: normalizePath(path.join(CESIUM_BASE_URL, 'Widgets/widgets.css')),
+            href: normalizePath(path.join(globalVars.cesiumRelativeUrl, 'Widgets/widgets.css')),
           }
         }
       ];
-      if (isBuild && !rebuildCesium) {
+      if (globalVars.isBuild && !rebuildCesium) {
         tags.push({
           tag: 'script',
           attrs: {
-            src: normalizePath(path.join(CESIUM_BASE_URL, 'Cesium.js')),
+            src: normalizePath(path.join(globalVars.cesiumRelativeUrl, 'Cesium.js')),
           }
         });
       }
