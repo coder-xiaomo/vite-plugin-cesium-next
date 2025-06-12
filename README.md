@@ -18,7 +18,7 @@ npm i vite-plugin-cesium-next -D
 
 ## Usage
 
-add this plugin to `vite.config.js`
+add this plugin to `vite.config.ts`
 
 ```js
 import { defineConfig } from 'vite';
