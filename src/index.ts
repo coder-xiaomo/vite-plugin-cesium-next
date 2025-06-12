@@ -6,24 +6,59 @@ import { HtmlTagDescriptor, normalizePath, Plugin, UserConfig } from 'vite';
 
 interface VitePluginCesiumOptions {
   /**
-   * rebuild cesium library, default: false
+   * 以下情况需要配置 `viteBase: '/'`
+   * 如果你的 baseUrl 是 './', 同时使用了 vue-router 的 history 模式路由
+   * 当存在二级或以上路由时, 相对路径获取 Cesium 静态资源会找不到
+   * 此时请将这里 viteBase 请配置为 '/'
+   *
+   * 以下情况可不配置 viteBase:
+   * 如果 baseUrl 是 / 开头的, 可不配置 viteBase, 插件会自动获取 vite.config.ts 内 base 配置
+   * 如果 vue-router 使用的是 hash 模式路由 (形如: `#/foo/bar`), 不影响静态资源地址, 可不配置 viteBase
+   * 如果 vue-router 使用的是 history 模式路由, 使用 Cesium 的所有页面:
+   *   - 若只有一级路由 (形如: `/foo`), 不需要配置 viteBase
+   *   - 若存在多级路由 (形如: `/foo/bar`), ⚠需要配置 viteBase
+   *
+   * default: 自动获取
+   */
+  viteBase?: string;
+
+  /**
+   * rebuild cesium library
+   *
+   * default: false
    */
   rebuildCesium?: boolean;
+
+  /**
+   * default: false
+   */
   devMinifyCesium?: boolean;
+
+  /**
+   * default: 'node_modules/cesium/Build'
+   */
   cesiumBuildRootPath?: string;
+
+  /**
+   * default: 'node_modules/cesium/Build/Cesium/'
+   */
   cesiumBuildPath?: string;
+
+  /**
+   * default: 'cesium/'
+   */
   cesiumBaseUrl?: string;
-  viteBase?: string;
+
 }
 
 export default function vitePluginCesium(options: VitePluginCesiumOptions = {}): Plugin {
   const {
+    viteBase = undefined,
     rebuildCesium = false,
     devMinifyCesium = false,
     cesiumBuildRootPath = 'node_modules/cesium/Build',
     cesiumBuildPath = 'node_modules/cesium/Build/Cesium/',
     cesiumBaseUrl = 'cesium/',
-    viteBase = undefined,
   } = options;
 
   const CESIUM_BASE_URL = cesiumBaseUrl.endsWith('/')
