@@ -32,7 +32,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/coder-xiaomo/vite-plugin-cesium-next"
+    "url": "git+https://github.com/coder-xiaomo/vite-plugin-cesium-next.git"
   },
   "bugs": {
     "url": "https://github.com/coder-xiaomo/vite-plugin-cesium-next/issues"
