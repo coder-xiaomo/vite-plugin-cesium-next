@@ -39,13 +39,13 @@
   },
   "dependencies": {
     "fs-extra": "^11.3.0",
-    "rollup-plugin-external-globals": "^0.6.1",
+    "rollup-plugin-external-globals": "^0.13.0",
     "serve-static": "^1.16.2"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^22.15.31",
+    "@types/node": "^22.15.32",
     "@types/serve-static": "^1.15.8",
     "prettier": "^3.5.3",
     "tsup": "^8.5.0",
