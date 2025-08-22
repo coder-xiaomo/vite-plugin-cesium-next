@@ -13,7 +13,7 @@
 ```bash
 # 记得安装 cesium 依赖哦
 npm i vite-plugin-cesium-next -D
-# yarn add vite-plugin-cesium-text -D
+# yarn add vite-plugin-cesium-next -D
 ```
 
 ## Usage
