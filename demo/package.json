@@ -9,7 +9,7 @@
     "serve": "vite build && vite preview"
   },
   "devDependencies": {
-    "cesium": "1.129.0",
+    "cesium": "1.136.0",
     "vite": "file:../node_modules/vite",
     "vite-plugin-cesium-next": "file:.."
   }
