@@ -3,13 +3,15 @@
         "src"
     ],
     "compilerOptions": {
+        "ignoreDeprecations": "6.0",
+        "rootDir": "./src",
         "outDir": "dist",
         "declaration": true,
         "target": "ES2017",
         "module": "commonjs",
         "removeComments": false,
         "strict": true,
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true

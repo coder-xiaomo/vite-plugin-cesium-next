@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import externalGlobals from 'rollup-plugin-external-globals';
 import serveStatic from 'serve-static';
-import { HtmlTagDescriptor, normalizePath, Plugin, UserConfig } from 'vite';
+import { HtmlTagDescriptor, normalizePath, Plugin, UserConfig, ConfigEnv, ViteDevServer } from 'vite';
 
 interface VitePluginCesiumOptions {
   /**
@@ -80,7 +80,7 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
   return {
     name: 'vite-plugin-cesium-next',
 
-    config(c, { command }) {
+    config(c: UserConfig, { command }: ConfigEnv) {
       // 项目中 vite.config.ts 配置的 base 路径
       if (viteBase) {
         globalVars.base = viteBase;
@@ -130,7 +130,7 @@ export default function vitePluginCesium(options: VitePluginCesiumOptions = {}):
       return userConfig;
     },
 
-    configureServer({ middlewares }) {
+    configureServer({ middlewares }: ViteDevServer) {
       const cesiumPath = path.join(cesiumBuildRootPath, devMinifyCesium ? 'Cesium' : 'CesiumUnminified');
       middlewares.use(path.posix.join('/', globalVars.cesiumRelativeUrl), serveStatic(cesiumPath, {
         setHeaders: (res, path, stat) => {
